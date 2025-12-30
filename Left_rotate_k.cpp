@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//Learning - better index manipulation
 void left_rotate(vector<int> &arr, int k){
     int n = arr.size();
     k = k % n;
@@ -21,6 +22,7 @@ void left_rotate(vector<int> &arr, int k){
     
 }
 
+//Learning - index manipulation
 // void left_rotate(vector<int> &arr, int k){
 //     int n = arr.size();
 //     int temp[k];
