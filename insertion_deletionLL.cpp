@@ -84,6 +84,73 @@ Node* delete_val(Node* head, int val){
 }
 
 //insertion into LL
+Node* insert_head(Node* head, int val){
+    // Node* x = new Node(val, head);
+    // head = x;
+    // return head;
+    
+    return new Node(val, head);
+}
+
+Node* insert_tail(Node* head, int val){
+    Node* nn = new Node(val);
+    if (head == NULL) {
+        head = nn;
+        // return head;
+    }
+    Node* temp = head;
+    while(temp->next!=NULL){
+        temp = temp->next;
+    }
+    temp->next = nn;
+    return head;
+}
+
+Node* insert_k(Node* head, int val, int k){
+    Node* nn = new Node(val);
+    if (head == NULL) {
+        if (k==1) head = nn;
+        else return head;
+    }
+    if (k==1){
+        nn->next = head;
+        head = nn;
+    }
+    int cnt=0;
+    Node* temp = head;
+    while(temp!=NULL){
+        cnt++;
+        if(cnt == k-1){
+            nn->next = temp->next;
+            temp->next = nn;
+            break;
+        }
+        temp = temp->next;
+    }
+    return head;
+}
+
+//guarnteed that x is always present, otherwise set some flag to check it
+Node* insert_el_before_x(Node* head, int el, int x){
+    Node* nn = new Node(el);
+    if (head == NULL) {
+        return NULL;
+    }
+    if (head->data==x){
+        nn->next = head;
+         return nn; //head = nn; causes infinite loop
+    }
+    Node* temp = head;
+    while(temp->next!=NULL){
+        if(temp->next->data == x){
+            nn->next = temp->next;
+            temp->next = nn;
+            break;
+        }
+        temp = temp->next;
+    }
+    return head;
+}
 
 Node* printt(Node* head){
     Node* temp = head;
@@ -102,7 +169,8 @@ int main() {
     Node* k = new Node(78, b);
     
     printt(k); cout<<endl;
-    Node* newk = delete_val(k, 78);
+    // Node* jk = NULL; 
+    Node* newk = insert_el_before_x(k, 100, 78);
     printt(newk);
 
     return 0;
