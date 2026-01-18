@@ -5,7 +5,6 @@ class Node{
     public:
     int data;
     Node* next;
-    
     //constructors
     public:
     Node(int data1, Node* next1){
