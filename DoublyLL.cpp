@@ -33,10 +33,11 @@ Node* convertarr_LL(vector<int> &arr){
 
 //deletion from LL
 Node* removehead(Node* head){
-    if (head == NULL) return head;
+    if (head == NULL || head->next == NULL) return head;
     Node* temp = head;
     head=head->next;
     head->prev = NULL;
+    temp->next = NULL;
     delete temp;
     return head;
 }
@@ -44,127 +45,76 @@ Node* removehead(Node* head){
 Node* removetail(Node* head){
     if (head == NULL || head->next == NULL) return NULL; //LL empty so return NULL
     Node* temp = head;
-    while(temp->next->next != NULL){
+    while(temp->next != NULL){
         temp=temp->next;
     }
-    delete temp->next;
-    temp->next = nullptr;
+    Node* back = temp->prev;
+    back->next = NULL;
+    temp->prev = nullptr;
+    delete temp;
     return head;
 }
 
+//k = 1 to length of LL
 Node* delete_pos_k(Node* head, int k){
     if (head == NULL) return head;
-    if(k==1){
-        Node* temp=head;
-        head=head->next;
-        free(temp);
-        return head;
-    }
     Node* temp = head;
-    Node* prev=NULL;
     int cnt=0;
     while(temp!=NULL){
         cnt++;
         if(cnt == k){
-            prev->next = prev->next->next;
-            free(temp);
             break;
         }
-        prev = temp;
         temp = temp->next;
     }
+    Node* back = temp->prev;
+    Node* front = temp->next;
+    if(back == NULL && front == NULL) return NULL;
+    else if(back == NULL) return removehead(head);
+    else if(front == NULL) return removetail(head);
+    back->next = front;
+    front->prev = back;
+    
+    temp->next = NULL;
+    temp->prev = NULL;
+    delete temp;
     return head;
 }
 
-Node* delete_val(Node* head, int val){
-    if (head == NULL) return head;
-    if(head->data==val){
-        Node* temp=head;
-        head=head->next;
+//Node to be deleted will never be head because that means moving head in original LL (more if-else)
+void delete_node(Node* temp){
+    Node* back = temp->prev;
+    Node* front = temp->next;
+    
+    if(front == NULL) {
+        back->next = nullptr;
+        temp->prev = nullptr;
         free(temp);
-        return head;
+        return;
     }
-    Node* temp = head;
-    Node* prev=NULL;
-    while(temp!=NULL){
-        if(temp->data == val){
-            prev->next = prev->next->next;
-            free(temp);
-            break;
-        }
-        prev = temp;
-        temp = temp->next;
-    }
-    return head;
+    back->next = front;
+    front->prev = back;
+    
+    temp->next = temp->prev = nullptr;
+    free(temp);
 }
 
 //insertion into LL
-// Node* insert_head(Node* head, int val){
-//     // Node* x = new Node(val, head);
-//     // head = x;
-//     // return head;
-    
-//     return new Node(val, head);
-// }
+Node* insert_head(Node* head, int val){
+
+}
 
 Node* insert_tail(Node* head, int val){
-    Node* nn = new Node(val);
-    if (head == NULL) {
-        head = nn;
-        // return head;
-    }
-    Node* temp = head;
-    while(temp->next!=NULL){
-        temp = temp->next;
-    }
-    temp->next = nn;
-    return head;
+    
 }
 
 Node* insert_k(Node* head, int val, int k){
-    Node* nn = new Node(val);
-    if (head == NULL) {
-        if (k==1) head = nn;
-        else return head;
-    }
-    if (k==1){
-        nn->next = head;
-        head = nn;
-    }
-    int cnt=0;
-    Node* temp = head;
-    while(temp!=NULL){
-        cnt++;
-        if(cnt == k-1){
-            nn->next = temp->next;
-            temp->next = nn;
-            break;
-        }
-        temp = temp->next;
-    }
-    return head;
+    
 }
 
 //guarnteed that x is always present, otherwise set some flag to check it
 Node* insert_el_before_x(Node* head, int el, int x){
-    Node* nn = new Node(el);
-    if (head == NULL) {
-        return NULL;
-    }
-    if (head->data==x){
-        nn->next = head;
-         return nn; //head = nn; causes infinite loop
-    }
-    Node* temp = head;
-    while(temp->next!=NULL){
-        if(temp->next->data == x){
-            nn->next = temp->next;
-            temp->next = nn;
-            break;
-        }
-        temp = temp->next;
-    }
-    return head;
+    
 }
 
 Node* printt(Node* head){
@@ -181,10 +131,9 @@ int main() {
     Node* hd = convertarr_LL(arr);
     printt(hd); cout<<endl;
     
-    // Node* jk = NULL; 
-    
-    Node* newk = removehead(hd);
-    printt(newk);
+    // Node* newk = delete_pos_k(hd,3);
+    delete_node(hd);
+    printt(hd);
 
     return 0;
 }
