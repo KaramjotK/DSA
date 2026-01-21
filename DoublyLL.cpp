@@ -100,21 +100,64 @@ void delete_node(Node* temp){
 }
 
 //insertion into LL
-Node* insert_head(Node* head, int val){
-
+Node* insert_before_head(Node* head, int val){
+    Node* temp = new Node(val, head, nullptr);
+    if (head == NULL) return NULL;
+    
+    head->prev = temp;
+    // temp->next = head;
+    head = head->prev;
+    
+    return head; //or temp
 }
 
-Node* insert_tail(Node* head, int val){
-    
+Node* insert_after_head(Node* head, int val){
+    // Node* temp = new Node(val, nullptr, head);
+    if (head == NULL) return NULL;
+    // if (head->next == NULL){
+    //     head->next = temp;
+    //     // temp->prev = head;
+    // }
+    // else{
+    //     temp->next = head->next;
+    //     head->next = temp;
+    //     temp->next->prev = temp;
+    //     // temp->prev = head;
+    // }
+    // Create new node
+    Node* newNode = new Node(val);
+
+    // Step 1: connect new node to head's next
+    newNode->next = head->next;
+    newNode->prev = head;
+
+    // Step 2: if there is a node after head, update its prev
+    if (head->next != NULL) {
+        head->next->prev = newNode;
+    }
+
+    // Step 3: connect head to new node
+    head->next = newNode;
+    return head;    
+}
+
+Node* insert_before_tail(Node* head, int val){
+    if (head == NULL) return NULL;
+    // if (head->next = )
+    return head;
+}
+
+Node* insert_after_tail(Node* head, int val){
+    return head;
 }
 
 Node* insert_k(Node* head, int val, int k){
-    
+    return head;
 }
 
 //guarnteed that x is always present, otherwise set some flag to check it
 Node* insert_el_before_x(Node* head, int el, int x){
-    
+    return head;
 }
 
 Node* printt(Node* head){
@@ -131,9 +174,9 @@ int main() {
     Node* hd = convertarr_LL(arr);
     printt(hd); cout<<endl;
     
-    // Node* newk = delete_pos_k(hd,3);
-    delete_node(hd);
-    printt(hd);
+    Node* newk = insert_after_head(hd,3);
+    // delete_node(hd->next);
+    printt(newk);
 
     return 0;
 }
