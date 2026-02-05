@@ -143,21 +143,98 @@ Node* insert_after_head(Node* head, int val){
 
 Node* insert_before_tail(Node* head, int val){
     if (head == NULL) return NULL;
-    // if (head->next = )
+    if (head->next == NULL) return insert_before_head(head, val);
+    Node* tail = head;
+    while (tail->next != NULL){
+        tail = tail->next;
+    }
+    Node* back = tail->prev;
+    Node* newNode = new Node(val, tail, back);
+    back->next = newNode;
+    tail->prev = newNode;
     return head;
 }
 
 Node* insert_after_tail(Node* head, int val){
+    if (head == NULL) {
+        return new Node(val);
+    }
+
+    Node* tail = head;
+    while (tail->next != NULL) {
+        tail = tail->next;
+    }
+
+    Node* newNode = new Node(val, nullptr, tail);
+    tail->next = newNode;
+
     return head;
 }
 
-Node* insert_k(Node* head, int val, int k){
+//k is position, k = 1 to N (length of LL)
+Node* insert_before_k(Node* head, int val, int k){
+    if (head == NULL) return NULL;
+    if (k == 1) return insert_before_head(head, val);
+    Node* temp = head;
+    int cnt = 1;
+    while(temp != NULL && cnt < k){
+        temp = temp->next;
+        cnt++;
+    }
+    Node* back = temp->prev;
+    Node* newNode = new Node(val, temp, back);
+    back->next = newNode;
+    temp->prev = newNode;
+
     return head;
 }
 
-//guarnteed that x is always present, otherwise set some flag to check it
-Node* insert_el_before_x(Node* head, int el, int x){
+Node* insert_after_k(Node* head, int val, int k){
+    if (head == NULL) return NULL;
+    Node* temp = head;
+    int cnt = 1;
+    while (temp != NULL && cnt < k) {
+        temp = temp->next;
+        cnt++;
+    }
+    
+    // if k is at tail
+    if (temp->next == NULL) {
+        return insert_after_tail(head, val);
+    }
+    // insert in between
+    Node* front = temp->next;
+    Node* newNode = new Node(val, front, temp);
+    temp->next = newNode;
+    front->prev = newNode;
+    
+    //following also works for all cases
+    // assuming k is always valid
+    // Node* front = temp->next;
+    // Node* newNode = new Node(val, front, temp);
+    // temp->next = newNode;
+    // if (front != NULL) {
+    //     front->prev = newNode;
+    // }
+
     return head;
+}
+
+
+//guarnteed that x is always present, otherwise set some flag to check it, x is node and x!=head, otherwise head changed
+void insert_el_before_x(Node* node, int el){
+    Node* back = node->prev;
+    Node* newNode = new Node(el, node, back);
+    back->next = newNode;
+    node->prev = newNode;
+}
+
+//x could be head, x couldn't be tail gives segmentation fault
+void insert_el_after_x(Node* node, int el){
+    Node* front = node->next;
+    Node* newNode = new Node(el, front, node);
+    node->next = newNode;
+    front->prev = newNode;
 }
 
 Node* printt(Node* head){
@@ -170,13 +247,15 @@ Node* printt(Node* head){
 }
 
 int main() {
-    vector<int> arr = {78, 90, 15, 34, 12};
+    vector<int> arr = {78,8,12,13,56};
     Node* hd = convertarr_LL(arr);
     printt(hd); cout<<endl;
     
-    Node* newk = insert_after_head(hd,3);
-    // delete_node(hd->next);
+    Node* newk = insert_after_k(hd,6,3);
+    // // delete_node(hd->next);
     printt(newk);
+    // insert_el_after_x(hd->next->next->next,0);
+    // printt(hd);
 
     return 0;
 }
