@@ -50,21 +50,44 @@ void find_union_set(int arr1[], int n1, int arr2[], int n2){
     cout<<endl;
 }
 
-//changeeeeee
+//optimal - 2 pointer approach
 void find_union(int arr1[], int n1, int arr2[], int n2){
     vector<int> unionn;
-    for(int i=0, j=0; i<n1, j<n2; i++, j++){
+    int i=0, j=0;
+    while (i<n1 && j<n2){
         if (arr1[i]<arr2[j]){
-            unionn.push_back(arr1[i]);
+            if (unionn.empty() || unionn.back()!=arr1[i]){
+                unionn.push_back(arr1[i]);
+            }
+            i++;
         }
         else if(arr1[i] == arr2[j]){
+            if (unionn.empty() || unionn.back()!=arr1[i]){
+                unionn.push_back(arr1[i]);
+            }
             i++;
             j++;
         }
         else{
-            unionn.push_back(arr2[i]);
+            if (unionn.empty() || unionn.back()!=arr2[j]){
+                unionn.push_back(arr2[j]);
+            }
+            j++;
         }
     }
+    while (i<n1) {
+        if (unionn.empty() || unionn.back()!=arr1[i]){
+                unionn.push_back(arr1[i]);
+            }
+        i++;
+    }
+    while (j<n2) {
+        if (unionn.empty() || unionn.back()!=arr2[j]){
+                unionn.push_back(arr2[j]);
+            }
+        j++;
+    } 
+    
     cout<<"union ";
     for(auto it:unionn) cout<<it<<" ";
     cout<<endl;
