@@ -54,6 +54,7 @@ void find_union_set(int arr1[], int n1, int arr2[], int n2){
 void find_union(int arr1[], int n1, int arr2[], int n2){
     vector<int> unionn;
     int i=0, j=0;
+    
     while (i<n1 && j<n2){
         if (arr1[i]<arr2[j]){
             if (unionn.empty() || unionn.back()!=arr1[i]){
@@ -75,6 +76,21 @@ void find_union(int arr1[], int n1, int arr2[], int n2){
             j++;
         }
     }
+
+    // striver uses 2 conditions and i am using 3 
+    // if (a[i] <= b[j]) {
+    //     push a[i]
+    //     i++
+    // }
+    // else {
+    //     push b[j]
+    //     j++
+    // }
+    // But interviewers prefer: <= version
+    // arr1[i] <= arr2[j] → process arr1
+    // arr1[i] > arr2[j] → process arr2
+    // Duplicate prevention is handled by: union.back() != value
+    
     while (i<n1) {
         if (unionn.empty() || unionn.back()!=arr1[i]){
                 unionn.push_back(arr1[i]);
