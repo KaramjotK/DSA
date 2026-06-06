@@ -1,0 +1,57 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <algorithm>
+#include <climits>
+using namespace std;
+
+//striver
+int sjf(int arr[], int n){
+    sort(arr, arr + n);
+    int t=0, wt=0;
+    
+    for (int i=0; i<n; i++){
+        wt+=t;
+        t+=arr[i];
+    }
+    
+    return (wt/n);
+}
+
+//my version
+// int sjf(int arr[], int n){
+//     int wt=0, t=0;
+    
+//     for (int i=0; i<n; i++){
+//         // int idx = min_element(arr, arr + n) - arr;
+//         // cout << "Index = " << idx;
+//         int mini=INT_MAX;
+//         int idx = -1;
+        
+//         for (int i = 0; i < n; i++) {
+//             if (arr[i] < mini) {
+//                 mini = arr[i];
+//                 idx = i;
+//             }
+//         }
+        
+//         wt += t;
+//         cout<<"wt "<<wt<<endl;
+//         t += arr[idx];
+//         cout<<"t "<<t<<endl;
+        
+//         arr[idx] = INT_MAX; // processed
+//     }
+    
+//     return (wt/n);
+// }
+
+int main() {
+    // Write C++ code here
+
+    int arr[] = {4,3,7,1,2};
+    int n = 5;
+    int ans = sjf(arr, n);
+    cout<<"average waiting time : "<<ans;
+
+    return 0;
+}
